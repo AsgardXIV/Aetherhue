@@ -45,16 +45,16 @@ public static class ImageHelpers
         return false;
     }
 
-    public static bool ColorsMatch(Color color1, Color color2, bool ignoreAlpha)
+    public static bool ColorsMatch(Color color1, Color color2, bool bIgnoreAlpha)
     {
         var pixel1 = color1.ToPixel<Rgba32>();
         var pixel2 = color2.ToPixel<Rgba32>();
-        return ColorsMatch(pixel1, pixel2, ignoreAlpha);
+        return ColorsMatch(pixel1, pixel2, bIgnoreAlpha);
     }
 
-    public static bool ColorsMatch(Rgba32 pixel1, Rgba32 pixel2, bool ignoreAlpha)
+    public static bool ColorsMatch(Rgba32 pixel1, Rgba32 pixel2, bool bIgnoreAlpha)
     {
-        if (ignoreAlpha)
+        if (bIgnoreAlpha)
         {
             return pixel1.R == pixel2.R && pixel1.G == pixel2.G && pixel1.B == pixel2.B;
         }
@@ -68,4 +68,21 @@ public static class ImageHelpers
     {
         return pixel1.R == pixel2.R && pixel1.G == pixel2.G && pixel1.B == pixel2.B;
     }
+
+    public static List<Rgba32> GetUniqueColors(Image<Rgba32> image, bool bIgnoreAlpha)
+    {
+        HashSet<Rgba32> uniqueColors = [];
+
+        for (int y = 0; y < image.Height; y++)
+        {
+            for (int x = 0; x < image.Width; x++)
+            {
+                var pixel = image[x, y];
+                uniqueColors.Add(new Rgba32(pixel.R, pixel.G, pixel.B, bIgnoreAlpha ? (byte)255 : pixel.A));
+            }
+        }
+
+        return [.. uniqueColors];
+    }
+
 }
