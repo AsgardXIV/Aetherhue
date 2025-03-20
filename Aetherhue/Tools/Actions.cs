@@ -43,7 +43,7 @@ static class Actions
     {      
         // Row offset
         int rowOffset = AnsiConsole.Prompt(new TextPrompt<int>("Row Offset?")
-            .DefaultValue(1)
+            .DefaultValue(2)
             .Validate(value =>
             {
                 if(value >= 0 && value < Framework.ImageUtils.XIVUtils.XIVColorRowCount)
