@@ -74,7 +74,7 @@ static class Actions
 
         // Execute
         AnsiConsole.MarkupLine($"Converting ID map to XIV ID map...");
-        var xivIdMap = Framework.ImageUtils.IDMapToXIVIDMap.Execute(image, rowOffset, bPackRowPairs, color);
+        var (xivIdMap, penumbraColorSet) = Framework.ImageUtils.IDMapToXIVIDMap.Execute(image, rowOffset, bPackRowPairs, color);
         
         // Generate side maps
         var redOnly = xivIdMap.Clone();
@@ -102,6 +102,9 @@ static class Actions
 
         var greenMapFileName = fileWithoutExtension + "_xivid_map_g.png";
         greenOnly.SaveAsPng(Path.Join(folderPath, greenMapFileName));
+
+        var penumbraColorSetFileName = fileWithoutExtension + "_penumbra_colorset.txt";
+        File.WriteAllText(Path.Join(folderPath, penumbraColorSetFileName), Convert.ToBase64String(penumbraColorSet));
 
         // Cleanup
         xivIdMap.Dispose();

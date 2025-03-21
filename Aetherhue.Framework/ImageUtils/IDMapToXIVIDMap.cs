@@ -1,4 +1,5 @@
-﻿using SixLabors.ImageSharp;
+﻿using Aetherhue.Framework.Utils;
+using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
 
@@ -6,11 +7,21 @@ namespace Aetherhue.Framework.ImageUtils;
 
 public static class IDMapToXIVIDMap
 {
-    public static Image<Rgba32> Execute(Image<Rgba32> image, int offset, bool bPack, Color backgroundColor)
+    public static (Image<Rgba32>, byte[]) Execute(Image<Rgba32> image, int offset, bool bPack, Color backgroundColor)
     {
+        var penumbraColorsetBytes = ResourceUtils.GetBytes("penumbra_colorset.bin");
+        using MemoryStream penumbraColorset = new();
+        penumbraColorset.Write(penumbraColorsetBytes, 0, penumbraColorsetBytes.Length);
+        penumbraColorset.Position = 0;
+
         var uniqueColors = ImageHelpers.GetUniqueColors(image, true);
 
         uniqueColors.Remove(backgroundColor);
+
+        for(int i = 0; i < uniqueColors.Count; i++)
+        {
+            XIVUtils.SetColorRow(penumbraColorset, uniqueColors[i], i + offset);
+        }
 
         Image<Rgba32> xivIdMap = image.Clone();
 
@@ -34,6 +45,6 @@ public static class IDMapToXIVIDMap
             }
         }
 
-        return xivIdMap;
+        return (xivIdMap, penumbraColorset.ToArray());
     }
 }

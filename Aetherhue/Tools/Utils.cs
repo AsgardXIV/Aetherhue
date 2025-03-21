@@ -24,4 +24,9 @@ static class Utils
         var image = Image.Load<Rgba32>(path);
         return image;
     }
+
+    public static string SanitizePath(string path)
+    {
+        return path.Trim().Trim('\"').Trim();
+    }
 }

@@ -21,9 +21,11 @@ class Program
         AnsiConsole.Write(new FigletText("Aetherhue").Color(Spectre.Console.Color.Purple));
 
         // Image path
-        var imagePath = args.Length > 0 ? args[0] : AnsiConsole.Prompt(new TextPrompt<string>("Path to file?"));
+        var rawImagePath = args.Length > 0 ? args[0] : AnsiConsole.Prompt(new TextPrompt<string>("Path to file?"));
+        var imagePath = Utils.SanitizePath(rawImagePath);
 
-        if(!File.Exists(imagePath))
+
+        if (!File.Exists(imagePath))
         {
             AnsiConsole.MarkupLine($"[red]File not found: {imagePath}[/]");
             if(waitAtEnd) Console.ReadLine();
