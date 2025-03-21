@@ -74,7 +74,13 @@ class Program
 
         // Success
         AnsiConsole.MarkupLine($"[green]Action complete.[/]");
-        if (waitAtEnd) Console.ReadLine();
+        if (waitAtEnd)
+        {
+            AnsiConsole.MarkupLine($"[green]Press any key to exit.[/]");
+            Console.Read();
+
+        }
+           
 
         return 0;
     }

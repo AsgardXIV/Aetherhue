@@ -39,8 +39,6 @@ public static class XIVUtils
         writer.Seek((row * 0x40), SeekOrigin.Begin);
 
         writer.Write(colorData);
-
-        writer.Flush();
     }
 
     private static byte[] EncodeColorToFormat(Color color)
