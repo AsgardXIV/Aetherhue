@@ -45,23 +45,14 @@ public static class XIVUtils
 
     private static byte[] EncodeColorToFormat(Color color)
     {
-        // TODO: Some kind of gamma or srgb conversion here?
+        static double Square(double x) => x < 0.00 ? -(x * x) : x * x; // Based on penumbra
 
         var extractedColor = color.ToPixel<Rgb24>();
 
-        float rFloat = extractedColor.R / 255.0f;
-        float gFloat = extractedColor.G / 255.0f;
-        float bFloat = extractedColor.B / 255.0f;
+        Half rHalf = (Half)Square(extractedColor.R / 255.0);
+        Half gHalf = (Half)Square(extractedColor.G / 255.0);
+        Half bHalf = (Half)Square(extractedColor.B / 255.0);
 
-        Half rHalf = (Half)rFloat;
-        Half gHalf = (Half)gFloat;
-        Half bHalf = (Half)bFloat;
-
-        var rBytes = BitConverter.GetBytes(rHalf);
-        var gBytes = BitConverter.GetBytes(gHalf);
-        var bBytes = BitConverter.GetBytes(bHalf);
-
-        // Return the bytes in the correct order
-        return [rBytes[0], rBytes[1], gBytes[1], gBytes[0], bBytes[0], bBytes[1]];
+        return [.. BitConverter.GetBytes(rHalf), .. BitConverter.GetBytes(gHalf), .. BitConverter.GetBytes(bHalf)];
     }
 }
