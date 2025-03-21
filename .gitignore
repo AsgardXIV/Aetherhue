@@ -13,6 +13,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+[Oo]ut/
 
 # .NET Core
 project.lock.json
@@ -46,3 +47,6 @@ nunit-*.xml
 
 # Visual Studio
 .vs/
+
+# User stuff
+*.user

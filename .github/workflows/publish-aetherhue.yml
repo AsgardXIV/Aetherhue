@@ -1,0 +1,43 @@
+name: Publish Aetherhue
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version tag to create
+        required: true
+
+jobs:
+  build:
+  
+    runs-on: windows-latest  
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Generate version
+      uses: josStorer/get-current-time@v2
+      id: version-date
+      with:
+        format: YYYY.M.D.kmm
+
+    - name: Publish Aetherhue
+      run: dotnet publish Aetherhue /p:DebugType=None /p:DebugSymbols=false /p:PublishProfile=PublishAetherhue.pubxml /p:Version=${{ github.event.inputs.version }}
+    
+    - name: Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: true
+        artifacts: "./out/Aetherhue.exe"
+        name: ${{ github.event.inputs.version }}
+        tag: v${{ github.event.inputs.version }}
+        draft: false
+        token: ${{ secrets.GITHUB_TOKEN }}
