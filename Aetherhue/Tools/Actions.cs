@@ -10,6 +10,7 @@ static class Actions
     public enum Action
     {
         IDMapToXIVIDMap,
+        OverlayImages,
         SeparateDiffuseAndAlpha,
         ExtendUVIslands
     }
@@ -17,6 +18,7 @@ static class Actions
     public static readonly Dictionary<Action, String> ActionMap = new()
     {
         { Action.IDMapToXIVIDMap, "ID Map to XIV ID Map" },
+        { Action.OverlayImages, "Overlay Images" },
         { Action.SeparateDiffuseAndAlpha, "Separate Diffuse and Alpha" },
         { Action.ExtendUVIslands, "Extend UV Islands" }
     };
@@ -27,6 +29,10 @@ static class Actions
         {
             case Action.IDMapToXIVIDMap:
                 IDMapToXIVIDMap(imagePath, image);
+                break;
+
+            case Action.OverlayImages:
+                OverlayImages(imagePath, image);
                 break;
 
             case Action.SeparateDiffuseAndAlpha:
@@ -111,6 +117,51 @@ static class Actions
         redOnly.Dispose();
         greenOnly.Dispose();
         AnsiConsole.MarkupLine($"XIV ID map written to {xivIDMapFileName}");
+    }
+
+    static void OverlayImages(String imagePath, Image<Rgba32> image)
+    {
+        bool bShouldLoop = true;
+        List<Image<Rgba32>> overlayImages = [];
+
+        do
+        {
+            // Overlay image
+            String rawOverlayImagePath = AnsiConsole.Prompt(new TextPrompt<String>("Overlay Image Path?").Validate(value => { 
+                var newPath = Utils.SanitizePath(value);
+                if (File.Exists(newPath))
+                {
+                    return ValidationResult.Success();
+                }
+                return ValidationResult.Error("[red]File not found.[/]");
+            }));
+            var overlayImagePath = Utils.SanitizePath(rawOverlayImagePath);
+            var overlayImage = Utils.PathToImage(overlayImagePath);
+            overlayImages.Add(overlayImage);
+
+            // Add another overlay?
+            bShouldLoop = AnsiConsole.Prompt(new ConfirmationPrompt("Add another overlay?"));
+
+        } while (bShouldLoop);
+
+        // Execute
+        AnsiConsole.MarkupLine($"Overlaying images...");
+        var newImage = Framework.ImageUtils.OverlayImages.Execute(image, [.. overlayImages]);
+
+        // Save
+        var folderPath = Path.GetDirectoryName(imagePath);
+        var fileWithoutExtension = Path.GetFileNameWithoutExtension(imagePath);
+        var overlayFileName = fileWithoutExtension + "_overlay.png";
+        newImage.SaveAsPng(Path.Join(folderPath, overlayFileName));
+
+        // Cleanup
+        newImage.Dispose();
+        foreach (var overlayImage in overlayImages)
+        {
+            overlayImage.Dispose();
+        }
+
+        AnsiConsole.MarkupLine($"Overlay written to {overlayFileName}");
     }
 
     static void SeparateDiffuseAndAlpha(String imagePath, Image<Rgba32> image)
