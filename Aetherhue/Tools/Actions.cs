@@ -1,5 +1,7 @@
 ﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Processing.Processors.Transforms;
 using Spectre.Console;
 using Color = SixLabors.ImageSharp.Color;
 
@@ -137,6 +139,21 @@ static class Actions
             }));
             var overlayImagePath = Utils.SanitizePath(rawOverlayImagePath);
             var overlayImage = Utils.PathToImage(overlayImagePath);
+
+            if(overlayImage.Size != image.Size)
+            {
+                AnsiConsole.MarkupLine("[yellow]Overlay image does not have same size as the base image.[/]");
+                if(AnsiConsole.Prompt(new ConfirmationPrompt("Automatically resize?")))
+                {
+                    overlayImage.Mutate(x => x.Resize(image.Width, image.Height, new NearestNeighborResampler()));
+                }
+                else
+                {
+                    overlayImage.Dispose();
+                    break;
+                }
+            }
+
             overlayImages.Add(overlayImage);
 
             // Add another overlay?
