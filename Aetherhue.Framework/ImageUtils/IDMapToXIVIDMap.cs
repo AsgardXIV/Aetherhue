@@ -20,7 +20,8 @@ public static class IDMapToXIVIDMap
 
         for(int i = 0; i < uniqueColors.Count; i++)
         {
-            XIVUtils.SetColorRow(penumbraColorset, uniqueColors[i], i + offset);
+            int realOffset = bPack ? i : i * 2;
+            XIVUtils.SetColorRow(penumbraColorset, uniqueColors[i], realOffset + offset);
         }
 
         Image<Rgba32> xivIdMap = image.Clone();

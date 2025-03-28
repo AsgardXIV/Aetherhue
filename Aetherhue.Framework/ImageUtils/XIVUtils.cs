@@ -25,7 +25,7 @@ public static class XIVUtils
         }
 
         int colorBand = pair * 17;
-        int blend = bPackRows ? (row % 2 == 0 ? 255 : 0) : pair;
+        int blend = bPackRows ? (row % 2 == 0 ? 255 : 0) : 255;
 
         return((byte)colorBand, (byte)blend);
     }
