@@ -5,7 +5,8 @@ It's a dumb little tool I made for my own use, it's a combination of simple scri
 It may or may not be useful to you but it's provided here as-is in case others do find some of the features useful.
 
 ## How do I use it?
-Download it, and either run the executable directly and follow the prompts, or drag an image onto the executable and follow the prompts.
+You can grab the latest release for windows [here](https://github.com/AsgardXIV/Aetherhue/releases/latest), or build manually if you are on Mac/Linux.
+Either run the executable directly and follow the prompts, or drag an image onto the executable and follow the prompts.
 
 ## What can it do?
 The following scripts are currently available:
