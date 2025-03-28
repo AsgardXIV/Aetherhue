@@ -150,7 +150,7 @@ static class Actions
                 else
                 {
                     overlayImage.Dispose();
-                    break;
+                    continue;
                 }
             }
 
