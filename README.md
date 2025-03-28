@@ -2,7 +2,7 @@
 
 ## What is Aetherhue?
 It's a combination of simple scripts for manipulating textures that I've found useful during XIV modding, bundled into one tool.
-It may or may not be useful to youbut it's provided here as-is in case others do find some of the features useful.
+It may or may not be useful to you but it's provided here as-is in case others do find some of the features useful.
 
 ## How do I use it?
 Download it, and either run the executable directly and follow the prompts, or drag an image onto the executable and follow the prompts.
