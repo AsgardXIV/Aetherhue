@@ -1,7 +1,7 @@
 # Aetherhue
 
 ## What is Aetherhue?
-It's a combination of simple scripts for manipulating textures that I've found useful during XIV modding, bundled into one tool.
+It's a dumb little tool I made for my own use, it's a combination of simple scripts for manipulating textures that I've found useful during XIV modding, bundled into one tool.
 It may or may not be useful to you but it's provided here as-is in case others do find some of the features useful.
 
 ## How do I use it?
